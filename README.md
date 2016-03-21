@@ -2,6 +2,8 @@
 
 Concise mock library for PHP tests.
 
+[![Build Status](https://img.shields.io/travis/mnapoli/mockup.svg?style=flat-square)](https://travis-ci.org/mnapoli/mockup)
+
 ## Why?
 
 TODO

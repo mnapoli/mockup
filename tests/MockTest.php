@@ -66,7 +66,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function override_class_method()
+    public function override_class_method_with_value()
     {
         /** @var Foo $mock */
         $mock = \Mockup\mock(Foo::class, [
@@ -74,6 +74,21 @@ class MockTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->assertEquals('hello', $mock->foo('bar', 'abc'));
+    }
+
+    /**
+     * @test
+     */
+    public function override_class_method_with_closure()
+    {
+        /** @var Foo $mock */
+        $mock = \Mockup\mock(Foo::class, [
+            'foo' => function ($bar, $abc) {
+                return $bar . $abc;
+            },
+        ]);
+
+        $this->assertEquals('barabc', $mock->foo('bar', 'abc'));
     }
 
     /**

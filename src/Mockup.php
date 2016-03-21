@@ -82,11 +82,15 @@ class Mockup
             $prefix = function ($proxy, $instance, $method, $parameters, &$returnEarly) use ($id, $methodOverrides) {
                 if (array_key_exists($method, $methodOverrides)) {
                     $returnEarly = true;
+                    $returnValue = $methodOverrides[$method];
+                    if ($returnValue instanceof \Closure) {
+                        $returnValue = call_user_func_array($returnValue, $parameters);
+                    }
                     self::$invokations[$id][$method][] = [
                         'parameters' => array_values($parameters),
-                        'return' => $methodOverrides[$method],
+                        'return' => $returnValue,
                     ];
-                    return $methodOverrides[$method];
+                    return $returnValue;
                 }
             };
             $suffix = function ($proxy, $instance, $method, $parameters, $returnValue) use ($id) {

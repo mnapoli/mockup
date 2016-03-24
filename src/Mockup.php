@@ -2,7 +2,8 @@
 
 namespace Mockup;
 
-use Mockup\Spy\MethodSpy;
+use Mockup\Spy\MethodInspector;
+use Mockup\Spy\ObjectInspector;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\NullObjectFactory;
 use ProxyManager\Proxy\ProxyInterface;
@@ -20,9 +21,9 @@ class Mockup
     private static $mocks = [];
 
     /**
-     * @var MethodSpy[][]
+     * @var ObjectInspector[]
      */
-    private static $methodSpies = [];
+    private static $mockInspectors = [];
 
     /**
      * Create a mock from a class or interface name.
@@ -57,19 +58,19 @@ class Mockup
     public static function invokationCount($mock, $method)
     {
         $id = spl_object_hash($mock);
-        return self::$methodSpies[$id][$method]->invokationCount();
+        return self::$mockInspectors[$id]->method($method)->invokationCount();
     }
 
     public static function parameters($mock, $method, $invokation = 0)
     {
         $id = spl_object_hash($mock);
-        return self::$methodSpies[$id][$method]->parameters($invokation);
+        return self::$mockInspectors[$id]->method($method)->parameters($invokation);
     }
 
     public static function returnValue($mock, $method, $invokation = 0)
     {
         $id = spl_object_hash($mock);
-        return self::$methodSpies[$id][$method]->returnValue($invokation);
+        return self::$mockInspectors[$id]->method($method)->returnValue($invokation);
     }
 
     private static function spyInvokations($object, array $methodOverrides, ReflectionClass $reflection)
@@ -78,32 +79,29 @@ class Mockup
         $mock = $factory->createProxy($object);
         $id = spl_object_hash($mock);
         self::$mocks[$id] = $mock;
+        self::$mockInspectors[$id] = new ObjectInspector();
 
         foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->isStatic()) {
                 continue;
             }
 
-            $methodSpy = new MethodSpy();
-
-            $prefix = function ($proxy, $instance, $method, $parameters, &$returnEarly) use ($id, $methodOverrides, $methodSpy) {
+            $prefix = function ($proxy, $instance, $method, $parameters, &$returnEarly) use ($id, $methodOverrides) {
                 if (array_key_exists($method, $methodOverrides)) {
                     $returnEarly = true;
                     $returnValue = $methodOverrides[$method];
                     if ($returnValue instanceof \Closure) {
                         $returnValue = call_user_func_array($returnValue, $parameters);
                     }
-                    $methodSpy->recordInvokation(array_values($parameters), $returnValue);
+                    self::$mockInspectors[$id]->recordInvokation($method, array_values($parameters), $returnValue);
                     return $returnValue;
                 }
             };
-            $suffix = function ($proxy, $instance, $method, $parameters, $returnValue) use ($id, $methodSpy) {
-                $methodSpy->recordInvokation(array_values($parameters), $returnValue);
+            $suffix = function ($proxy, $instance, $method, $parameters, $returnValue) use ($id) {
+                self::$mockInspectors[$id]->recordInvokation($method, array_values($parameters), $returnValue);
             };
             $mock->setMethodPrefixInterceptor($method->getName(), $prefix);
             $mock->setMethodSuffixInterceptor($method->getName(), $suffix);
-
-            self::$methodSpies[$id][$method->getName()] = $methodSpy;
         }
 
         return $mock;

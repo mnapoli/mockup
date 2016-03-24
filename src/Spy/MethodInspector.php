@@ -5,7 +5,7 @@ namespace Mockup\Spy;
 /**
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class MethodSpy
+class MethodInspector
 {
     /**
      * @var array

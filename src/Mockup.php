@@ -2,11 +2,9 @@
 
 namespace Mockup;
 
-use Mockup\Spy\MethodInspector;
 use Mockup\Spy\ObjectInspector;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\NullObjectFactory;
-use ProxyManager\Proxy\ProxyInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -15,11 +13,6 @@ use ReflectionMethod;
  */
 class Mockup
 {
-    /**
-     * @var ProxyInterface[]
-     */
-    private static $mocks = [];
-
     /**
      * @var ObjectInspector[]
      */
@@ -78,7 +71,6 @@ class Mockup
         $factory = new AccessInterceptorValueHolderFactory;
         $mock = $factory->createProxy($object);
         $id = spl_object_hash($mock);
-        self::$mocks[$id] = $mock;
         self::$mockInspectors[$id] = new ObjectInspector();
 
         foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {

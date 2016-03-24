@@ -48,22 +48,13 @@ class Mockup
         return self::spyInvokations($object, $methodOverrides, $reflection);
     }
 
-    public static function invokationCount($mock, $method)
+    /**
+     * @return ObjectInspector
+     */
+    public static function inspect($mock)
     {
         $id = spl_object_hash($mock);
-        return self::$mockInspectors[$id]->method($method)->invokationCount();
-    }
-
-    public static function parameters($mock, $method, $invokation = 0)
-    {
-        $id = spl_object_hash($mock);
-        return self::$mockInspectors[$id]->method($method)->parameters($invokation);
-    }
-
-    public static function returnValue($mock, $method, $invokation = 0)
-    {
-        $id = spl_object_hash($mock);
-        return self::$mockInspectors[$id]->method($method)->returnValue($invokation);
+        return self::$mockInspectors[$id];
     }
 
     private static function spyInvokations($object, array $methodOverrides, ReflectionClass $reflection)

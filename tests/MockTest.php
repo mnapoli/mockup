@@ -2,7 +2,6 @@
 
 namespace Mockup\Test;
 
-use Mockup\Mockup;
 use Mockup\Test\Fixture\Foo;
 use Mockup\Test\Fixture\FooInterface;
 
@@ -44,9 +43,9 @@ class MockTest extends \PHPUnit_Framework_TestCase
         $mock = \Mockup\spy(new Foo);
         $mock->foo('bar', 'abc');
 
-        $this->assertEquals(1, Mockup::invokationCount($mock, 'foo'));
-        $this->assertEquals(['bar', 'abc'], Mockup::parameters($mock, 'foo'));
-        $this->assertEquals('bar', Mockup::returnValue($mock, 'foo'));
+        $this->assertEquals(1, \Mockup\inspect($mock)->method('foo')->invokationCount());
+        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->method('foo')->parameters());
+        $this->assertEquals('bar', \Mockup\inspect($mock)->method('foo')->returnValue());
     }
 
     /**
@@ -58,9 +57,9 @@ class MockTest extends \PHPUnit_Framework_TestCase
         $mock = \Mockup\mock(FooInterface::class);
         $mock->foo('bar', 'abc');
 
-        $this->assertEquals(1, Mockup::invokationCount($mock, 'foo'));
-        $this->assertEquals(['bar', 'abc'], Mockup::parameters($mock, 'foo'));
-        $this->assertNull(Mockup::returnValue($mock, 'foo'));
+        $this->assertEquals(1, \Mockup\inspect($mock)->method('foo')->invokationCount());
+        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->method('foo')->parameters());
+        $this->assertNull(\Mockup\inspect($mock)->method('foo')->returnValue());
     }
 
     /**
@@ -102,8 +101,8 @@ class MockTest extends \PHPUnit_Framework_TestCase
         ]);
         $mock->foo('bar', 'abc');
 
-        $this->assertEquals(1, Mockup::invokationCount($mock, 'foo'));
-        $this->assertEquals(['bar', 'abc'], Mockup::parameters($mock, 'foo'));
-        $this->assertEquals('hello', Mockup::returnValue($mock, 'foo'));
+        $this->assertEquals(1, \Mockup\inspect($mock)->method('foo')->invokationCount());
+        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->method('foo')->parameters());
+        $this->assertEquals('hello', \Mockup\inspect($mock)->method('foo')->returnValue());
     }
 }

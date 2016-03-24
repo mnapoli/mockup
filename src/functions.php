@@ -2,6 +2,7 @@
 
 namespace Mockup;
 
+use Mockup\Spy\ObjectInspector;
 use ProxyManager\Proxy\ProxyInterface;
 
 /**
@@ -16,4 +17,11 @@ function mock($classname, array $methods = []) {
  */
 function spy($object, array $methods = []) {
     return Mockup::spy($object, $methods);
+}
+
+/**
+ * @return ObjectInspector
+ */
+function inspect($mock) {
+    return Mockup::inspect($mock);
 }

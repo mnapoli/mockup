@@ -19,12 +19,14 @@ TODO
 You can mock a class or an interface:
 
 ```php
+use function Mockup\mock;
+
 interface Foo
 {
     public function foo($bar);
 }
 
-$mock = \Mockup\mock(Foo::class);
+$mock = mock(Foo::class);
 $mock->foo();
 ```
 
@@ -33,7 +35,7 @@ All its methods will do nothing and return `null` ([null object pattern](https:/
 You can make some methods return values other than null:
 
 ```php
-$mock = \Mockup\mock(Foo::class, [
+$mock = mock(Foo::class, [
     'foo' => 'hello',
 ]);
 
@@ -43,7 +45,7 @@ $mock->foo('john'); // hello
 You can also use a closure to define the new method's body:
 
 ```php
-$mock = \Mockup\mock(Foo::class, [
+$mock = mock(Foo::class, [
     'foo' => function ($bar) {
         return strtoupper('hello ' . $bar);
     }
@@ -57,7 +59,9 @@ $mock->foo('john'); // HELLO JOHN
 You can spy calls to an object:
 
 ```php
-$spy = \Mockup\spy($cache);
+use function Mockup\{spy, inspect};
+
+$spy = spy($cache);
 $foo->doSomething($spy);
 
 inspect($spy)->set()->invokationCount(); // number of calls to $spy->set()
@@ -72,7 +76,9 @@ Mockup does not provide assertions or expectations so that you can use the asser
 Every mock object is also a spy, so you can create a mock and spy its method calls:
 
 ```php
-$mock = \Mockup\mock(CacheInterface::class);
+use function Mockup\{mock, inspect};
+
+$mock = mock(CacheInterface::class);
 $foo->doSomething($mock);
 
 inspect($spy)->set()->invokationCount();

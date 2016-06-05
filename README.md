@@ -6,7 +6,50 @@ Concise mock library for PHP tests.
 
 ## Why?
 
-TODO
+This mock library is meant to be a simple yet powerful alternative to existing solutions.
+
+- Mockup
+
+```php
+$mock = mock(Foo::class, [
+    'foo' => 'Hello',
+]);
+```
+
+- PHPUnit
+
+```php
+$mock = $this->getMock(Foo::class, [], [], '', false);
+$mock->expect($this->any())
+    ->method('foo')
+    ->willReturn('Hello');
+```
+
+- Prophecy
+
+```php
+$prophet = new \Prophecy\Prophet();
+$mock = $prophet->prophesize(Foo::class);
+$mock->foo()->willReturn('Hello');
+$mock = $mock->reveal();
+```
+
+- Mockery
+
+```php
+$mock = Mockery::mock(Foo::class);
+$mock->shouldReceive('foo')
+    ->andReturn('Hello');
+```
+
+Additionally, Mockup **doesn't include assertions**. Instead of forcing you to learn a specific assertion syntax, complex enough to cover all cases, it lets you use the assertions you already know (PHPUnit, phpspec, …). Here is an example in a PHPUnit test:
+
+```php
+// The mock method was called once
+$this->assertEquals(1, inspect($mock)->foo()->invokationCount());
+```
+
+Read more about spying method calls below.
 
 ## Installation
 

@@ -10,7 +10,9 @@ TODO
 
 ## Installation
 
-TODO
+```
+composer require --dev mnapoli/mockup
+```
 
 ## Usage
 

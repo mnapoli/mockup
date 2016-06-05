@@ -1,8 +1,8 @@
 {
     "name": "mnapoli/mockup",
-    "description": "Give it a nice description!",
+    "description": "Concise mock library for PHP tests",
     "keywords": [],
-    "homepage": "http://example.com",
+    "homepage": "https://github.com/mnapoli/mockup",
     "license": "MIT",
     "type": "library",
     "autoload": {

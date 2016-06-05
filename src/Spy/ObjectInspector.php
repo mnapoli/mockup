@@ -16,7 +16,7 @@ class ObjectInspector
      * @param string $method
      * @return MethodInspector
      */
-    public function method($method)
+    public function __call($method, array $arguments)
     {
         if (!isset($this->methodSpies[$method])) {
             $this->methodSpies[$method] = new MethodInspector();

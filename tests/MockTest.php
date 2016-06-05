@@ -43,9 +43,9 @@ class MockTest extends \PHPUnit_Framework_TestCase
         $mock = \Mockup\spy(new Foo);
         $mock->foo('bar', 'abc');
 
-        $this->assertEquals(1, \Mockup\inspect($mock)->method('foo')->invokationCount());
-        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->method('foo')->parameters());
-        $this->assertEquals('bar', \Mockup\inspect($mock)->method('foo')->returnValue());
+        $this->assertEquals(1, \Mockup\inspect($mock)->foo()->invokationCount());
+        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->foo()->parameters());
+        $this->assertEquals('bar', \Mockup\inspect($mock)->foo()->returnValue());
     }
 
     /**
@@ -57,9 +57,9 @@ class MockTest extends \PHPUnit_Framework_TestCase
         $mock = \Mockup\mock(FooInterface::class);
         $mock->foo('bar', 'abc');
 
-        $this->assertEquals(1, \Mockup\inspect($mock)->method('foo')->invokationCount());
-        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->method('foo')->parameters());
-        $this->assertNull(\Mockup\inspect($mock)->method('foo')->returnValue());
+        $this->assertEquals(1, \Mockup\inspect($mock)->foo()->invokationCount());
+        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->foo()->parameters());
+        $this->assertNull(\Mockup\inspect($mock)->foo()->returnValue());
     }
 
     /**
@@ -101,8 +101,8 @@ class MockTest extends \PHPUnit_Framework_TestCase
         ]);
         $mock->foo('bar', 'abc');
 
-        $this->assertEquals(1, \Mockup\inspect($mock)->method('foo')->invokationCount());
-        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->method('foo')->parameters());
-        $this->assertEquals('hello', \Mockup\inspect($mock)->method('foo')->returnValue());
+        $this->assertEquals(1, \Mockup\inspect($mock)->foo()->invokationCount());
+        $this->assertEquals(['bar', 'abc'], \Mockup\inspect($mock)->foo()->parameters());
+        $this->assertEquals('hello', \Mockup\inspect($mock)->foo()->returnValue());
     }
 }

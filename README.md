@@ -60,9 +60,9 @@ You can spy calls to an object:
 $spy = \Mockup\spy($cache);
 $foo->doSomething($spy);
 
-inspect($spy)->method('set')->invokationCount(); // number of calls to $spy->set()
-inspect($spy)->method('set')->parameters(0); // parameters provided to the first call to $spy->set()
-inspect($spy)->method('set')->returnValue(0); // value returned by the first call to $spy->set()
+inspect($spy)->set()->invokationCount(); // number of calls to $spy->set()
+inspect($spy)->set()->parameters(0); // parameters provided to the first call to $spy->set()
+inspect($spy)->set()->returnValue(0); // value returned by the first call to $spy->set()
 ```
 
 The difference with a mock is that you are spying real calls to a real object. A mock is a [null object](https://en.wikipedia.org/wiki/Null_Object_pattern).
@@ -75,7 +75,7 @@ Every mock object is also a spy, so you can create a mock and spy its method cal
 $mock = \Mockup\mock(CacheInterface::class);
 $foo->doSomething($mock);
 
-inspect($spy)->method('set')->invokationCount();
-inspect($spy)->method('set')->parameters(0);
-inspect($spy)->method('set')->returnValue(0);
+inspect($spy)->set()->invokationCount();
+inspect($spy)->set()->parameters(0);
+inspect($spy)->set()->returnValue(0);
 ```
